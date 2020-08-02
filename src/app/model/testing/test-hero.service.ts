@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { asyncData } from '../../../testing';
+import { asyncData } from '../../../testing/async-observable-helpers';
 
 import { map } from 'rxjs/operators';
 
