@@ -61,4 +61,17 @@ describe('Master Service', () => {
         masterService = new MasterService(fake as ValueService);  // THIS LINE - works because `fake` is a constructable object
         expect(masterService.getValue()).toBe('fake object value');
     });
+
+    it('should return stubbed value from getValue method using a spy', () => {
+        const valueServiceSpy = jasmine.createSpyObj('ValueService', ['getValue']);
+
+        // the method getValue should return stub value when called
+        const stubValue = 'stub value';
+        valueServiceSpy.getValue.and.returnValue(stubValue);
+
+        masterService = new MasterService(valueServiceSpy);
+        expect(masterService.getValue()).toBe(stubValue, 'service return stub value');
+        expect(valueServiceSpy.getValue.calls.count()).toBe(1, 'spy method was called once');
+        expect(valueServiceSpy.getValue.calls.mostRecent().returnValue).toBe(stubValue);
+    });
 });
