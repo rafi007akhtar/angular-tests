@@ -75,3 +75,22 @@ describe('Master Service', () => {
         expect(valueServiceSpy.getValue.calls.mostRecent().returnValue).toBe(stubValue);
     });
 });
+
+// testing below this will not use beforeEach function
+function setup() {
+    const valueServiceSpy = jasmine.createSpyObj('ValueService', ['getValue']);
+    const stubValue = 'stub value';
+    const masterService = new MasterService(valueServiceSpy);
+    valueServiceSpy.getValue.and.returnValue(stubValue);
+    
+    return {masterService, stubValue, valueServiceSpy };
+}
+
+describe('MasterService without beforeEach', () => {
+    it('should return a stub value from getValue method using a spy', () => {
+        const { masterService, stubValue, valueServiceSpy } = setup();
+        expect(masterService.getValue()).toBe(stubValue);
+        expect(valueServiceSpy.getValue.calls.count()).toBe(1);
+        expect(valueServiceSpy.getValue.calls.mostRecent().returnValue).toBe(stubValue);
+    });
+});
