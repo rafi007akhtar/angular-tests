@@ -1,4 +1,4 @@
-import { ValueService, MasterService } from './demo';
+import { ValueService, MasterService, LightswitchComponent } from './demo';
 
 /**
  * Fakes go in this class
@@ -73,6 +73,30 @@ describe('Master Service', () => {
         expect(masterService.getValue()).toBe(stubValue, 'service return stub value');
         expect(valueServiceSpy.getValue.calls.count()).toBe(1, 'spy method was called once');
         expect(valueServiceSpy.getValue.calls.mostRecent().returnValue).toBe(stubValue);
+    });
+});
+
+describe('LightswitchComp', () => {
+    let comp: LightswitchComponent;
+
+    beforeEach(() => {
+        comp = new LightswitchComponent();
+    });
+
+    it('should toggle isOn on calling of clicked method', () => {
+        expect(comp.isOn).toBe(false, 'initially the switch will be off');
+        comp.clicked();
+        expect(comp.isOn).toBe(true, 'After clicking the switch, it should turn on');
+        comp.clicked();
+        expect(comp.isOn).toBe(false, 'After clicking it again, it should turn back off');
+    });
+
+    it('should show a message with on / off state', () => {
+        expect(comp.message).toContain('Off', 'initially the switch will be off');
+        comp.clicked();
+        expect(comp.message).toContain('On', 'After clicking the switch, it should turn on');
+        comp.clicked();
+        expect(comp.message).toContain('Off', 'After clicking it again, it should turn back off');
     });
 });
 
