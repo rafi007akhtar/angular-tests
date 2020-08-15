@@ -1,7 +1,9 @@
 import { TwainComponent } from './twain.component';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, async } from '@angular/core/testing';
 import { TwainService } from './twain.service';
 import { of, throwError } from 'rxjs';
+import { asyncData } from '../../testing/async-observable-helpers';
+import { last } from 'rxjs/operators';
 
 describe('Twain Component', () => {
     let testQuote: string;
@@ -23,7 +25,7 @@ describe('Twain Component', () => {
         quoteSpy = twainService.getQuote.and.returnValue(of(testQuote));
 
         TestBed.configureTestingModule({
-            declarations: [ TwainComponent ],
+            declarations: [TwainComponent],
             providers: [{
                 provide: TwainService,
                 useValue: twainService
@@ -55,4 +57,55 @@ describe('Twain Component', () => {
         expect(errorMessage()).toContain('test failure');
         expect(quoteEl.textContent).toBe('...');
     }));
+
+    describe('testing with asynchronous observables', () => {
+        beforeEach(() => { quoteSpy.and.returnValue(asyncData(testQuote)); })
+
+        it('should show quote after getQuote method (fakeAsync)', fakeAsync(() => {
+            fixture.detectChanges();
+            expect(quoteEl.textContent).toBe('...');
+
+            tick();
+            fixture.detectChanges();
+
+            expect(quoteEl.textContent).toBe(testQuote, 'should show test quote');
+            expect(errorMessage()).toBeNull('should not show error');
+        }));
+
+        it('should show quote after getQuote (async)', async(() => {
+            fixture.detectChanges();
+            expect(quoteEl.textContent).toBe('...');
+
+            // now, instead of using tick method, the whenStable method will be used
+            // it will house all the code that follows tick, like so:
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                expect(quoteEl.textContent).toBe(testQuote, 'should show test quote');
+                expect(errorMessage()).toBeNull('should not show error');
+            })
+        }));
+
+        it('should show last quote (pipe done)', (done: DoneFn) => {
+            fixture.detectChanges();
+
+            component.quote.pipe(last()).subscribe(() => {
+                fixture.detectChanges();
+                expect(quoteEl.textContent).toBe(testQuote, 'should show test quote');
+                expect(errorMessage()).toBeNull('should not show error');
+                done();
+            });
+        });
+
+        it('should show quote after getQuote (spy done)', (done: DoneFn) => {
+            fixture.detectChanges();
+
+            quoteSpy.calls.mostRecent().returnValue.subscribe(() => {
+                fixture.detectChanges();
+                expect(quoteEl.textContent).toBe(testQuote, 'should show test quote');
+                expect(errorMessage()).toBeNull('should not show error');
+                done();
+            });
+        });
+    });
+
 });
