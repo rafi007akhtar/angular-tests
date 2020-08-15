@@ -41,5 +41,11 @@ describe('Banner component (inline template)', () => {
         fixture.detectChanges();
         expect(h1.textContent).toBe(component.title);
     });
+
+    it('should detect a different test title', () => {
+        component.title = 'Test title';
+        fixture.detectChanges();
+        expect(h1.textContent).toBe('Test title');
+    });
 });
 
