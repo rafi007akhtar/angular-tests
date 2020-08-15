@@ -14,7 +14,7 @@ describe('Banner component (with beforeEach)', () => {
         });
         fixture = TestBed.createComponent(BannerComponent);
         component = fixture.componentInstance;
-        bannerElement =  fixture.nativeElement;  // this will help interact with the DOM elements of the component
+        bannerElement = fixture.nativeElement;  // this will help interact with the DOM elements of the component
     });
 
     it('should be created', () => {
