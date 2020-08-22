@@ -5,6 +5,9 @@ import { of, throwError } from 'rxjs';
 import { asyncData } from '../../testing/async-observable-helpers';
 import { last } from 'rxjs/operators';
 
+// imports for marble testing
+import { cold, getTestScheduler } from 'jasmine-marbles';
+
 describe('Twain Component', () => {
     let testQuote: string;
     let fixture: ComponentFixture<TwainComponent>;
@@ -106,6 +109,40 @@ describe('Twain Component', () => {
                 done();
             });
         });
+
+        // marble testing follows up next
+        it('should show quote after getQuote (marbles)', () => {
+            // make a cold observable for the quote
+            const q$ = cold('---q|', { q: testQuote })  // wait for 3 frames (---), emit the mapped quote (q), and complete (|)
+            // make the getQuote method return this cold observale
+            quoteSpy.and.returnValue(q$);
+
+            fixture.detectChanges();
+            expect(quoteEl.textContent).toBe('...', 'should show placeholder');
+
+            // activate the marble observable
+            getTestScheduler().flush();
+
+            fixture.detectChanges();
+            expect(quoteEl.textContent).toBe(testQuote, 'should show test quote');
+            expect(errorMessage()).toBeNull();
+        });
+
+        // marble error testing
+        it('should show error when TwainService fails', fakeAsync(() => {
+            const q$ = cold('---#|', null, new Error('Twain service test failure'));
+            quoteSpy.and.returnValue(q$);
+
+            fixture.detectChanges();
+            expect(quoteEl.textContent).toBe('...', 'should show placeholder');
+            
+            getTestScheduler().flush();
+            tick();  // component shows error after a setTimeout
+
+            fixture.detectChanges();
+            expect(quoteEl.textContent).toBe('...', 'should show placeholder');
+            expect(errorMessage()).toContain('test failure');
+        }));
     });
 
 });
