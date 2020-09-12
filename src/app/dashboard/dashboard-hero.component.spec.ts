@@ -35,7 +35,7 @@ describe('DashboardHeroComponent when tested directly', () => {
         heroDe = fixture.debugElement.query(By.css('.hero'));
         heroEl = heroDe.nativeElement;
 
-        expectedHero = {id: 42, name: 'Tes name'};
+        expectedHero = {id: 42, name: 'Test name'};
         comp.hero = expectedHero;
         
         fixture.detectChanges();
@@ -44,5 +44,13 @@ describe('DashboardHeroComponent when tested directly', () => {
     it('should display hero name in upper case', () => {
         const expectedPipedName = expectedHero.name.toUpperCase();
         expect(heroEl.textContent).toContain(expectedPipedName);
+    });
+
+    it('should raise selected event when clicked (triggerEventHandler)', () => {
+        let selectedHero: Hero;
+        comp.selected.subscribe((hero: Hero) => selectedHero = hero);
+
+        heroDe.triggerEventHandler('click', null);
+        expect(selectedHero).toBe(expectedHero);
     });
 });
