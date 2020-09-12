@@ -3,6 +3,8 @@ import { Hero } from '../model/hero';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import {} from '../../testing/async-observable-helpers';
+import { click } from 'src/testing';
 
 describe('DashboardHeroComponent (class only)', () => {
     it('raises the selected event when clicked', () => {
@@ -50,7 +52,25 @@ describe('DashboardHeroComponent when tested directly', () => {
         let selectedHero: Hero;
         comp.selected.subscribe((hero: Hero) => selectedHero = hero);
 
-        heroDe.triggerEventHandler('click', null);
+        heroDe.triggerEventHandler('click', null);  // Remember: for DebugElements, use triggerEventHandler
+        expect(selectedHero).toBe(expectedHero);
+    });
+
+    it('should raise selected event when clicked (event.click)', () => {
+        let selectedHero: Hero;
+        comp.selected.subscribe((hero: Hero) => selectedHero = hero);
+
+        heroEl.click();  // Remember: for HTMLElements you can use their native click events
+        expect(selectedHero).toBe(expectedHero);
+    });
+
+    it('should raise selected event when clicked', () => {
+        let selectedHero: Hero;
+        comp.selected.subscribe((hero: Hero) => selectedHero = hero);
+
+        click(heroDe);  // helper method will BTS call the triggerEventHandler since this is DebugElement
+        click(heroEl);  // helper method will BTS call the native click event since this is HTMLElement
+
         expect(selectedHero).toBe(expectedHero);
     });
 });
