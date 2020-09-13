@@ -3,7 +3,6 @@ import { Hero } from '../model/hero';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import {} from '../../testing/async-observable-helpers';
 import { click } from 'src/testing';
 
 describe('DashboardHeroComponent (class only)', () => {
@@ -74,3 +73,54 @@ describe('DashboardHeroComponent when tested directly', () => {
         expect(selectedHero).toBe(expectedHero);
     });
 });
+
+describe('DashboardHeroComponent when inside a test host', () => {
+    // uses the TestHeroComponent from below
+    let fixture: ComponentFixture<TestHeroComponent>;
+    let heroEl: HTMLElement;
+    let heroDe: DebugElement;
+    let testHost: TestHeroComponent;
+
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [ DashboardHeroComponent, TestHeroComponent ]
+        });
+
+        fixture = TestBed.createComponent(TestHeroComponent);
+        testHost = fixture.componentInstance;
+        heroDe = fixture.debugElement.query(By.css('.hero'));
+        heroEl = heroDe.nativeElement;
+
+        fixture.detectChanges();
+    });
+
+    it('should display hero name in upper case', () => {
+        const expectedPipedName = testHost.hero.name.toUpperCase();
+        expect(heroEl.textContent).toContain(expectedPipedName);
+    });
+
+    it('should raise selected event when clicked', () => {
+        click(heroEl);
+        expect(testHost.selectedHero).toBe(testHost.hero);
+    });
+});
+
+// Test host component - begins
+import { Component } from '@angular/core';
+
+@Component({
+    template: `
+        <dashboard-hero
+        [hero]=hero (selected)="onSelected($event)" >
+        </dashboard-hero>
+    `
+})
+class TestHeroComponent {
+    // a clean stub for the DashboardHero component, like the Dashboard component, but without its dependencies
+    hero: Hero = {id: 42, name: 'Test name'};
+    selectedHero: Hero;
+    onSelected(hero: Hero) {
+        this.selectedHero = hero;
+    }
+}
+// Test host component - ends
