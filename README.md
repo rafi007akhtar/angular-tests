@@ -22,3 +22,22 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
 
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
+- Takeaway: **You can use a spy object as a stub to a class.**
+
+    ```ts
+    // Stubbing the router component
+
+    // Inside beforeEach
+    const routerSpy = jasmine.createSpyObject('Router', ['navigateByUrl']);
+
+    // Inside TestBed.configureTestingModule
+    TestBed.configureTestingModule({
+        providers: [
+            { provide: Router, useValue: routerSpy }
+        ]
+    })
+    
+    ```
+
+### Routed Component
+- It is the destination of a routing component.
