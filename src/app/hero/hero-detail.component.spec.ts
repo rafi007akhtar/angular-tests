@@ -3,6 +3,9 @@ import { HeroDetailService } from './hero-detail.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestHeroService } from '../model/testing/test-hero.service';
 import { HeroModule } from './hero.module';
+import { ActivatedRouteStub, ActivatedRoute } from '../../testing/activated-route-stub';
+import { HeroService } from '../model/hero.service';
+import { Router } from '@angular/router';
 
 function newEvent(eventName: string, bubbles = false, cancelable = false) {
     const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
@@ -10,16 +13,23 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
     return evt;
 }
 
+// stubs
+const activatedStub: any = {}
+
 describe('when navigates to existing hero', () => {
     let fixture: ComponentFixture<HeroDetailComponent>;
     let component: HeroDetailComponent;
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [ HeroModule ],
             declarations: [HeroDetailComponent],
             providers: [
-                { provide: HeroDetailService, useClass: TestHeroService }
+                { provide: HeroDetailService, useClass: TestHeroService },
+                { provide: ActivatedRoute, useValue: activatedStub },
+                { provide: HeroService, useValue: {} },
+                { provide: Router, useValue: routerSpy }
             ]
         });
         fixture = TestBed.createComponent(HeroDetailComponent);
