@@ -41,3 +41,36 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
 
 ### Routed Component
 - It is the destination of a routing component.
+- For test cases involving async code, the use of `fakeAsync` or `waitForAsync` is indespensible. In such cases, **group all related async codes inside a `describe` block each**, like so:
+
+    ```ts
+    describe('all async code in this block depends on value 1 of the async variable', () => { /* code */ });
+    describe('all async code in this block depends on value 2 of the async variable', () => { /* code */ });
+    describe('all async code in this block depends on value 3 of the async variable', () => { /* code */ });
+    ```
+
+- This is crucial, otherwise, if all test cases were in the same describe block, different values of the variable will have conflict with each other. 
+- The result being, in some test runs, block 1's test cases will fail due to some other block.
+- In other cases, block 2's test cases will fail and in other cases block 3's will fail.
+- This is specially scary during build, as different build runs will fail due to different errors without even changing the code. Hence, group your async testing in different describe blocks.
+- In async scenarios like these, fixture should be detecting changes only when changes are ready. For doing so, write a function outside of `beforeEach` but inside the `describe`, like below, and call it in the `beforeEach` block.
+
+    ```ts
+    // inside describe but outside beforeEach
+    function createComponent() {
+        fixture = TestBed.createComponent(/*component class*/);
+        component = fixture.createInstance;
+
+        fixture.detectChanges // ngOnInit
+
+        // now, due to async code, run detech changes through a Promise
+        return fixture.whenStabe().then(() => {fixture.detectChanges});
+    }
+
+    // inside beforeEach
+    beforeEach(fakeAsync(() => {
+        // complete the TestBed
+        TestBed.configureTestingModule(/* complete the TestBed */);
+        createComponent();
+    }));
+    ```
