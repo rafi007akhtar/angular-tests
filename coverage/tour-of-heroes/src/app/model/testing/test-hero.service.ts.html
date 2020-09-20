@@ -22,30 +22,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/16</span>
+                <span class='fraction'>8/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>3/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.14% </span>
+                <span class="strong">42.86% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/14</span>
+                <span class='fraction'>6/14</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -147,14 +147,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,10 +163,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,11 +213,11 @@ import { getTestHeroes } from './test-heroes';
 */
 export class TestHeroService extends HeroService {
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor() {</span>
-<span class="cstat-no" title="statement not covered" >    super(null);</span>
+  constructor() {
+    super(null);
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  heroes = getTestHeroes();</span>
+  heroes = getTestHeroes();
   lastResult: Observable&lt;any&gt;; // result from last method call
 &nbsp;
 <span class="fstat-no" title="function not covered" >  addHero(</span>hero: Hero): Observable&lt;Hero&gt; {
@@ -232,12 +232,12 @@ export class TestHeroService extends HeroService {
 <span class="cstat-no" title="statement not covered" >    return this.lastResult = asyncData(this.heroes);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  getHero(</span>id: number | string): Observable&lt;Hero&gt; {
-<span class="cstat-no" title="statement not covered" >    if (typeof id === 'string') {</span>
+  getHero(id: number | string): Observable&lt;Hero&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof id === 'string') {
 <span class="cstat-no" title="statement not covered" >      id = parseInt(id, 10);</span>
     }
-    const hero = <span class="cstat-no" title="statement not covered" >this.heroes.find(<span class="fstat-no" title="function not covered" >h </span>=&gt; <span class="cstat-no" title="statement not covered" >h.id === id)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    return this.lastResult = asyncData(hero);</span>
+    const hero = this.heroes.find(h =&gt; h.id === id);
+    return this.lastResult = asyncData(hero);
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  updateHero(</span>hero: Hero): Observable&lt;Hero&gt; {
@@ -264,7 +264,7 @@ can be found in the LICENSE file at http://angular.io/license
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Sep 20 2020 19:22:30 GMT+0530 (India Standard Time)
+                at Sun Sep 20 2020 20:35:45 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="..\..\..\..\prettify.js"></script>
