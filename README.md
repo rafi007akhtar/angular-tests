@@ -28,7 +28,7 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
     // Stubbing the router component
 
     // Inside beforeEach
-    const routerSpy = jasmine.createSpyObject('Router', ['navigateByUrl']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     // Inside TestBed.configureTestingModule
     TestBed.configureTestingModule({
