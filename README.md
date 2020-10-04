@@ -61,7 +61,7 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
         fixture = TestBed.createComponent(/*component class*/);
         component = fixture.createInstance;
 
-        fixture.detectChanges // ngOnInit
+        fixture.detectChanges(); // ngOnInit
 
         // now, due to async code, run detech changes through a Promise
         return fixture.whenStabe().then(() => {fixture.detectChanges});
