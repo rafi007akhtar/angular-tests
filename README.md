@@ -74,3 +74,13 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
         createComponent();
     }));
     ```
+
+### Nested Component Tests
+- Shallow component testing: here, the code reduces the stubbing to only those components required in the component's test cases.
+- **`NO_ERRORS_SCHEMA`** instructs the compiler to ignore the stubs not found during compilation.
+    ```ts
+    TestBed.configureTestingModule({
+        schemas: [ NO_ERRORS_SCHEMA ]
+    })
+    ```
+- Do *not* overuse `NO_ERRORS_SCHEMA`, since the compiler will then be unable to tell you where the error is in case any interaction has happened with the ignored stubs.
