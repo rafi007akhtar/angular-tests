@@ -8,6 +8,52 @@ import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
+let fixture: ComponentFixture<HeroDetailComponent>;
+let page: Page;
+
+// Borrowing the Page class from Angular's docs
+// Source: https://angular.io/guide/testing-components-scenarios#use-a-page-object
+class Page {
+    // getter properties wait to query the DOM until called.
+    get buttons() {
+      return this.queryAll<HTMLButtonElement>('button');
+    }
+    get saveBtn() {
+      return this.buttons[0];
+    }
+    get cancelBtn() {
+      return this.buttons[1];
+    }
+    get nameDisplay() {
+      return this.query<HTMLElement>('span');
+    }
+    get nameInput() {
+      return this.query<HTMLInputElement>('input');
+    }
+  
+    gotoListSpy: jasmine.Spy;
+    navigateSpy: jasmine.Spy;
+  
+    constructor(someFixture: ComponentFixture<HeroDetailComponent>) {
+      // get the navigate spy from the injected router spy object
+      const routerSpy = someFixture.debugElement.injector.get(Router) as any;
+      this.navigateSpy = routerSpy.navigate;
+  
+      // spy on component's `gotoList()` method
+      const someComponent = someFixture.componentInstance;
+      this.gotoListSpy = spyOn(someComponent, 'gotoList').and.callThrough();
+    }
+  
+    //// query helpers ////
+    private query<T>(selector: string): T {
+      return fixture.nativeElement.querySelector(selector);
+    }
+  
+    private queryAll<T>(selector: string): T[] {
+      return fixture.nativeElement.querySelectorAll(selector);
+    }
+}
+
 function newEvent(eventName: string, bubbles = false, cancelable = false) {
     const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
     evt.initCustomEvent(eventName, bubbles, cancelable, null);
@@ -15,7 +61,6 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
 }
 
 describe('HeroDetailComponent - when navigates to existing hero', () => {
-    let fixture: ComponentFixture<HeroDetailComponent>;
     let component: HeroDetailComponent;
     const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     const activatedRouteStub = new ActivatedRouteStub()
@@ -64,7 +109,6 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
 });
 
 describe('HeroDetailComponent - when navigates with no hero id', () => {
-    let fixture: ComponentFixture<HeroDetailComponent>;
     let component: HeroDetailComponent;
     const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     const activatedRouteStub = new ActivatedRouteStub()
@@ -105,7 +149,6 @@ describe('HeroDetailComponent - when navigates with no hero id', () => {
 });
 
 describe('HeroDetailComponent - when navigates to non-existent hero', () => {
-    let fixture: ComponentFixture<HeroDetailComponent>;
     let component: HeroDetailComponent;
     const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     const activatedRouteStub = new ActivatedRouteStub();
