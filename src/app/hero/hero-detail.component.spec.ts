@@ -7,6 +7,7 @@ import { HeroService } from '../model/hero.service';
 import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { click } from 'src/testing';
 
 let fixture: ComponentFixture<HeroDetailComponent>;
 let page: Page;
@@ -86,6 +87,7 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
     function createComponent() {
         fixture = TestBed.createComponent(HeroDetailComponent);
         component = fixture.componentInstance;
+        page = new Page(fixture);
 
         fixture.detectChanges();  // ngOnInit
 
@@ -93,6 +95,15 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
             fixture.detectChanges();  // async calls
         })
     }
+
+    it('should display that hero\'s name', () => {
+        expect(page.nameDisplay.textContent).toBe(expectedHero.name);
+    });
+
+    it('should navigate when clicked on cancel', () => {
+        click(page.cancelBtn);
+        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');
+    });
 
     it('should convert hero name to Title Case', () => {
         const hostElement = fixture.nativeElement;
