@@ -44,6 +44,7 @@ class Page {
       // spy on component's `gotoList()` method
       const someComponent = someFixture.componentInstance;
       this.gotoListSpy = spyOn(someComponent, 'gotoList').and.callThrough();
+      debugger;
     }
   
     //// query helpers ////
@@ -64,7 +65,7 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
 
 describe('HeroDetailComponent - when navigates to existing hero', () => {
     let component: HeroDetailComponent;
-    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const activatedRouteStub = new ActivatedRouteStub()
 
     let expectedHero: Hero;
@@ -72,7 +73,7 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
     beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             imports: [HeroModule],
-            declarations: [HeroDetailComponent],
+            // declarations: [HeroDetailComponent],
             providers: [
                 { provide: ActivatedRoute, useValue: activatedRouteStub },
                 { provide: HeroService, useClass: TestHeroService },
@@ -109,20 +110,19 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
 
     //     click(page.saveBtn);
     //     expect(saveSpy.calls.any()).toBeTruthy('HeroService.save was called');
-    //     // expect(page.navigateSpy.calls.any()).toBeFalsy('router.navigate was not called');
-
+    //     expect(page.navigateSpy.calls.any()).toBe(false, 'router.navigate not called');
     // });
 
-    // it('should navigate when clicked on save after save resolves', fakeAsync(() => {
-    //     click(page.saveBtn);
-    //     tick();  // waiting for save to resolve
-    //     // expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');;
-    // }));
+    it('should navigate when clicked on save after save resolves', fakeAsync(() => {
+        click(page.saveBtn);
+        tick();  // waiting for save to resolve
+        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');;
+    }));
 
-    // it('should navigate when clicked on cancel', () => {
-    //     click(page.cancelBtn);
-    //     expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');
-    // });
+    it('should navigate when clicked on cancel', () => {
+        click(page.cancelBtn);
+        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');
+    });
 
     it('should convert hero name to Title Case', () => {
         const hostElement = fixture.nativeElement;
