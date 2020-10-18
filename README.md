@@ -102,3 +102,9 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
         expect(/* replace with expectation */)/* chain with test method */
     }));
     ```
+- If a particular `Service` instance is declared `private` in a component, and if you wish to stub a `method` offered by this `service`, then use the `injector` method, like so:
+    ```ts
+    const injectedService = fixture.debugElement.injector.get(Service);
+    const serviceSpy = spyOn(injectedService, 'method');
+    // note: this method does not work with `jasmine.createSpyObject`, so use `spyOn` instead
+    ```
