@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { click } from 'src/testing';
+import { HeroDetailService } from './hero-detail.service';
 
 let fixture: ComponentFixture<HeroDetailComponent>;
 let page: Page;
@@ -100,16 +101,28 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
         expect(page.nameDisplay.textContent).toBe(expectedHero.name);
     });
 
-    it('should navigate when clicked on save', fakeAsync(() => {
-        click(page.saveBtn);
-        tick();  // waiting for save to resolve
-        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');;
-    }));
+    // it('should not navigate when clicked on save until save resolves', () => {
+    //     // const saveSpy = spyOn(component.heroDetailService, 'saveHero');  // can NOT use this method since the instance is private
+    //     // instead, using the injector to get the instance of the service
+    //     const hds = fixture.debugElement.injector.get(HeroDetailService);
+    //     const saveSpy = spyOn(hds, 'saveHero').and.callThrough();
 
-    it('should navigate when clicked on cancel', () => {
-        click(page.cancelBtn);
-        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');
-    });
+    //     click(page.saveBtn);
+    //     expect(saveSpy.calls.any()).toBeTruthy('HeroService.save was called');
+    //     // expect(page.navigateSpy.calls.any()).toBeFalsy('router.navigate was not called');
+
+    // });
+
+    // it('should navigate when clicked on save after save resolves', fakeAsync(() => {
+    //     click(page.saveBtn);
+    //     tick();  // waiting for save to resolve
+    //     // expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');;
+    // }));
+
+    // it('should navigate when clicked on cancel', () => {
+    //     click(page.cancelBtn);
+    //     expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');
+    // });
 
     it('should convert hero name to Title Case', () => {
         const hostElement = fixture.nativeElement;
