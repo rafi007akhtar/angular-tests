@@ -1,5 +1,5 @@
 import { HeroDetailComponent } from './hero-detail.component';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { Hero, TestHeroService, getTestHeroes } from '../model/testing/test-hero.service';
 import { HeroModule } from './hero.module';
 import { ActivatedRouteStub, ActivatedRoute } from '../../testing/activated-route-stub';
@@ -102,16 +102,17 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
         expect(page.nameDisplay.textContent).toBe(expectedHero.name);
     });
 
-    // it('should not navigate when clicked on save until save resolves', () => {
-    //     // const saveSpy = spyOn(component.heroDetailService, 'saveHero');  // can NOT use this method since the instance is private
-    //     // instead, using the injector to get the instance of the service
-    //     const hds = fixture.debugElement.injector.get(HeroDetailService);
-    //     const saveSpy = spyOn(hds, 'saveHero').and.callThrough();
+    it('should not navigate when clicked on save until save resolves', () => {
+        // const saveSpy = spyOn(component.heroDetailService, 'saveHero');  // can NOT use this method since the instance is private
+        // instead, using the injector to get the instance of the service
+        const hds = fixture.debugElement.injector.get(HeroDetailService);
+        const saveSpy = spyOn(hds, 'saveHero').and.callThrough();
 
-    //     click(page.saveBtn);
-    //     expect(saveSpy.calls.any()).toBeTruthy('HeroService.save was called');
-    //     expect(page.navigateSpy.calls.any()).toBe(false, 'router.navigate not called');
-    // });
+        click(page.saveBtn);
+        expect(saveSpy.calls.any()).toBeTruthy('HeroService.save was called');
+        expect(page.navigateSpy.calls.any()).toBe(false, 'router.navigate not called');
+        pending('Can\'t get the second expect passing - will come back to it and try again.');
+    });
 
     it('should navigate when clicked on save after save resolves', fakeAsync(() => {
         click(page.saveBtn);
