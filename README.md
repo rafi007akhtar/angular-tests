@@ -83,3 +83,22 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
     })
     ```
 - Do *not* overuse `NO_ERRORS_SCHEMA`, since the compiler will then be unable to tell you where the error is in case any interaction has happened with the ignored stubs.
+
+### Components with `RouterLink`
+(yet to be written)
+
+### Use a `page` object
+- The `page` object acted as stubbed version of hero-detail component. It is basically a helper class designed to provide attributes, methods, and spies for testing this otherwise challenging-to-stub class.
+- Source: [link on angular.io](https://angular.io/guide/testing-components-scenarios#use-a-page-object)
+- **Testing when the method contains a subscribe**. Steps:
+    1. Put the `it` body inside a `fakeAsync` method.
+    2. Call the method containing subscribe inside the test.
+    3. Call the `tick` method to wait until subscribe ends before testing further.
+    4. Write the expected tests. In this way:
+    ```ts
+    it('spec to test a method with subscribe', fakeAsync(() => {
+        methodContainingSubscribe();
+        tick();  // waits until subscribe completes
+        expect(/* replace with expectation */)/* chain with test method */
+    }));
+    ```

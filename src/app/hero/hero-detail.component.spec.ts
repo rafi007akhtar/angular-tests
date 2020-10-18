@@ -1,5 +1,5 @@
 import { HeroDetailComponent } from './hero-detail.component';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Hero, TestHeroService, getTestHeroes } from '../model/testing/test-hero.service';
 import { HeroModule } from './hero.module';
 import { ActivatedRouteStub, ActivatedRoute } from '../../testing/activated-route-stub';
@@ -99,6 +99,12 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
     it('should display that hero\'s name', () => {
         expect(page.nameDisplay.textContent).toBe(expectedHero.name);
     });
+
+    it('should navigate when clicked on save', fakeAsync(() => {
+        click(page.saveBtn);
+        tick();  // waiting for save to resolve
+        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate was called');;
+    }));
 
     it('should navigate when clicked on cancel', () => {
         click(page.cancelBtn);
