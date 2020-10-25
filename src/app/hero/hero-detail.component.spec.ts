@@ -65,6 +65,8 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
 
 describe('HeroDetailComponent - when navigates to existing hero', () => {
     let component: HeroDetailComponent;
+    // let page: Page;
+    // let fixture: ComponentFixture<HeroDetailComponent>;
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const activatedRouteStub = new ActivatedRouteStub()
 
@@ -108,10 +110,15 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
         const hds = fixture.debugElement.injector.get(HeroDetailService);
         const saveSpy = spyOn(hds, 'saveHero').and.callThrough();
 
-        click(page.saveBtn);
-        expect(saveSpy.calls.any()).toBeTruthy('HeroService.save was called');
-        expect(page.navigateSpy.calls.any()).toBe(false, 'router.navigate not called');
-        pending('Can\'t get the second expect passing - will come back to it and try again.');
+        fakeAsync(() => {
+            // Adding this fakeAsync block outside of the expect so as to enforce
+            // the testing BEFORE the subscribe has resolved
+            // otherwise it was passing at some runs and failing at others
+            click(page.saveBtn);
+            expect(saveSpy.calls.any()).toBeTruthy('HeroService.save was called');
+            expect(page.navigateSpy.calls.any()).toBe(false, 'router.navigate not called');
+            tick();
+        });
     });
 
     it('should navigate when clicked on save after save resolves', fakeAsync(() => {
