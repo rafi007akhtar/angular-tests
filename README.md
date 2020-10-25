@@ -85,7 +85,12 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
 - Do *not* overuse `NO_ERRORS_SCHEMA`, since the compiler will then be unable to tell you where the error is in case any interaction has happened with the ignored stubs.
 
 ### Components with `RouterLink`
-(yet to be written)
+- I've used `RouterLinkDirectiveStub` as a ready-made stub of the `RouterLink` class.
+- Source: [link on angular.io](https://angular.io/guide/testing-components-scenarios#components-with-routerlink)
+- `By.directive(type)` can be used to fetch all injected elements of the specified type. Example:
+    ```ts
+    const routerLinks = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));  // replaced `type` with `RouterLinkDirectiveStub`
+    ```
 
 ### Use a `page` object
 - The `page` object acted as stubbed version of hero-detail component. It is basically a helper class designed to provide attributes, methods, and spies for testing this otherwise challenging-to-stub class.
