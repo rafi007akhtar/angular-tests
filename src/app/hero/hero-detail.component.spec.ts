@@ -141,7 +141,7 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
 
 describe('HeroDetailComponent - when navigates with no hero id', () => {
     let component: HeroDetailComponent;
-    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const activatedRouteStub = new ActivatedRouteStub()
 
     beforeEach(fakeAsync(() => {
@@ -181,13 +181,13 @@ describe('HeroDetailComponent - when navigates with no hero id', () => {
 
 describe('HeroDetailComponent - when navigates to non-existent hero', () => {
     let component: HeroDetailComponent;
-    const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const activatedRouteStub = new ActivatedRouteStub();
 
     beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             imports: [HeroModule],
-            declarations: [HeroDetailComponent],
+            // declarations: [HeroDetailComponent],
             providers: [
                 { provide: ActivatedRoute, useValue: activatedRouteStub },
                 { provide: HeroService, useClass: TestHeroService },
@@ -202,6 +202,7 @@ describe('HeroDetailComponent - when navigates to non-existent hero', () => {
     function createComponent() {
         fixture = TestBed.createComponent(HeroDetailComponent);
         component = fixture.componentInstance;
+        page = new Page(fixture);
 
         fixture.detectChanges();  // ngOnInit
 
@@ -211,6 +212,7 @@ describe('HeroDetailComponent - when navigates to non-existent hero', () => {
     }
 
     it('should try to navigate back to hero list', () => {
-        pending('will complete writing this after learning about the Page class in future');
+        expect(page.gotoListSpy.calls.any()).toBeTruthy('comp.gotoList called');
+        expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate called');
     });
 });
