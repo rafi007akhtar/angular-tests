@@ -1,20 +1,24 @@
 import { BannerComponent } from './banner.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 describe('Banner component (inline template)', () => {
     let component: BannerComponent;
     let fixture: ComponentFixture<BannerComponent>;
     let h1: HTMLElement;
 
-    beforeEach(() => {
+    // using a consolidated async zone in order to use compileComponents
+    beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             declarations: [BannerComponent]
+        })
+        .compileComponents()
+        .then(() => {
+            fixture = TestBed.createComponent(BannerComponent);
+            component = fixture.componentInstance;
+            h1 = fixture.nativeElement.querySelector('h1');
         });
-
-        fixture = TestBed.createComponent(BannerComponent);
-        component = fixture.componentInstance;
-        h1 = fixture.nativeElement.querySelector('h1');
-    });
+        
+    }));
 
     it('should be created', () => {
         expect(component).toBeDefined();

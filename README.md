@@ -113,3 +113,35 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
     const serviceSpy = spyOn(injectedService, 'method');
     // note: this method does not work with `jasmine.createSpyObject`, so use `spyOn` instead
     ```
+
+### Using `compileComponents()`
+- If the testing _only_ happens in in Angular CLI, the `compileComponents` method can be skipped as all the external files are in memory.
+- If the testing happens in a non-CLI external env, and if the file tested has external files (like external template and css files), the compilation will fail.
+- REASON: the compiler must read external files, which is an async tasks.
+- SOLUTION: At the **end** of the TestBed, chain it with `compileComponents` method inside of an async zone.
+- Procedures:
+    ```ts
+    // procedure 1: two beforeEach's
+    beforeEach(fakeAsync(() => {
+        TestBed
+            .configureTestingModule([ /* providers, etc */ ])
+            .compileComponents();
+    }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(/*component class*/);
+        component = fixture.componentInstance;
+        // and so on ...
+    });
+
+    // procedure 2: one considlated beforeEach
+    beforeEach(fakeAsync(() => {
+        TestBed
+            .configureTestingModule([ /* providers, etc */ ])
+            .compileComponents()
+            .then(() => {
+                fixture = TestBed.createComponent(/*component class*/);
+                component = fixture.componentInstance;
+                // and so on ...
+            })
+    }));
+    ```
