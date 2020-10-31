@@ -296,14 +296,14 @@ describe('HeroDetailComponent - override providers', () => {
     }
 
     beforeEach(fakeAsync(() => {
-        
-        TestBed.configureTestingModule({
-            imports: [HeroModule],
-            providers: [
-                { provide: ActivatedRoute, useValue: activatedRouteStub },
-                { provide: Router, useValue: routerSpy },
-            ]
-        })
+        TestBed
+            .configureTestingModule({
+                imports: [HeroModule],
+                providers: [
+                    { provide: ActivatedRoute, useValue: activatedRouteStub },
+                    { provide: Router, useValue: routerSpy },
+                ]
+            })
             .overrideComponent(
                 HeroDetailComponent, {
                     set: {
@@ -323,4 +323,26 @@ describe('HeroDetailComponent - override providers', () => {
     it('should have called `getHero`', () => {
         expect(hds.getHero.calls.count()).toBe(1, 'getHero called once');
     });
+
+    it('should display stub hero\'s name', () => {
+        expect(page.nameDisplay.textContent).toBe(hds.testHero.name);
+    });
+
+    it('should save stub hero change', fakeAsync(() => {
+        const origName = hds.testHero.name;
+        const newName = 'New Name';
+
+        page.nameInput.value = newName;
+        page.nameInput.dispatchEvent(new Event('input'));
+
+        expect(comp.hero.name).toBe(newName, 'component has a new name');
+        expect(hds.testHero.name).toBe(origName, 'service hero name not changed before save');
+
+        click(page.saveBtn);
+        expect(hds.saveHero.calls.count()).toBe(1, 'save button clicked');
+        tick();  // wait for subscribe to resolve
+
+        expect(hds.testHero.name).toBe(newName);
+        expect(page.navigateSpy.calls.any()).toBe(true, 'router.navigate called');
+    }));
 });
