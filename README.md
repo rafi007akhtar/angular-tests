@@ -145,3 +145,22 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
             })
     }));
     ```
+
+### Module Imports
+- When using a consolidated `compileComponents` implementation, if you need to put `detectChanges` method, put it _twice_: first, inside `beforeEach`, and then inside the `it`, like so:
+    ```ts
+    beforeEach(fakeAsync(() => {
+        TestBed
+            .configureTesingModule({/* providers, etc */})
+            .compileComponents()
+            .then(() => {
+                // initialize fixture, component etc
+                fixture.detectChanges();
+            });
+    }));
+
+    it('some test',  fakeAsync(() => {
+        fixture.detectChanges();
+        // now write expect statements containing the test
+    }));
+    ```
