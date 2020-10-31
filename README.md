@@ -124,7 +124,7 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
     // procedure 1: two beforeEach's
     beforeEach(fakeAsync(() => {
         TestBed
-            .configureTestingModule([ /* providers, etc */ ])
+            .configureTestingModule({ /* providers, etc */ })
             .compileComponents();
     }));
     beforeEach(() => {
@@ -136,7 +136,7 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
     // procedure 2: one considlated beforeEach
     beforeEach(fakeAsync(() => {
         TestBed
-            .configureTestingModule([ /* providers, etc */ ])
+            .configureTestingModule({ /* providers, etc */ })
             .compileComponents()
             .then(() => {
                 fixture = TestBed.createComponent(/*component class*/);
