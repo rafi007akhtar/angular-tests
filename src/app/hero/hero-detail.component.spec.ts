@@ -10,6 +10,7 @@ import { By } from '@angular/platform-browser';
 import { click } from 'src/testing';
 import { HeroDetailService } from './hero-detail.service';
 import { SharedModule } from '../shared/shared.module';
+import { asyncData } from 'src/testing/async-observable-helpers';
 
 let fixture: ComponentFixture<HeroDetailComponent>;
 let page: Page;
@@ -19,42 +20,42 @@ let page: Page;
 class Page {
     // getter properties wait to query the DOM until called.
     get buttons() {
-      return this.queryAll<HTMLButtonElement>('button');
+        return this.queryAll<HTMLButtonElement>('button');
     }
     get saveBtn() {
-      return this.buttons[0];
+        return this.buttons[0];
     }
     get cancelBtn() {
-      return this.buttons[1];
+        return this.buttons[1];
     }
     get nameDisplay() {
-      return this.query<HTMLElement>('span');
+        return this.query<HTMLElement>('span');
     }
     get nameInput() {
-      return this.query<HTMLInputElement>('input');
+        return this.query<HTMLInputElement>('input');
     }
-  
+
     gotoListSpy: jasmine.Spy;
     navigateSpy: jasmine.Spy;
-  
+
     constructor(someFixture: ComponentFixture<HeroDetailComponent>) {
-      // get the navigate spy from the injected router spy object
-      const routerSpy = someFixture.debugElement.injector.get(Router) as any;
-      this.navigateSpy = routerSpy.navigate;
-  
-      // spy on component's `gotoList()` method
-      const someComponent = someFixture.componentInstance;
-      this.gotoListSpy = spyOn(someComponent, 'gotoList').and.callThrough();
-      debugger;
+        // get the navigate spy from the injected router spy object
+        const routerSpy = someFixture.debugElement.injector.get(Router) as any;
+        this.navigateSpy = routerSpy.navigate;
+
+        // spy on component's `gotoList()` method
+        const someComponent = someFixture.componentInstance;
+        this.gotoListSpy = spyOn(someComponent, 'gotoList').and.callThrough();
+        debugger;
     }
-  
+
     //// query helpers ////
     private query<T>(selector: string): T {
-      return fixture.nativeElement.querySelector(selector);
+        return fixture.nativeElement.querySelector(selector);
     }
-  
+
     private queryAll<T>(selector: string): T[] {
-      return fixture.nativeElement.querySelectorAll(selector);
+        return fixture.nativeElement.querySelectorAll(selector);
     }
 }
 
@@ -84,7 +85,7 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
         });
 
         expectedHero = getTestHeroes()[0];  // first hero
-        activatedRouteStub.setParamMap({id: expectedHero.id});
+        activatedRouteStub.setParamMap({ id: expectedHero.id });
         createComponent();
     }));
 
@@ -202,7 +203,7 @@ describe('HeroDetailComponent - when navigates to non-existent hero', () => {
             ]
         });
 
-        activatedRouteStub.setParamMap({id: 99999});
+        activatedRouteStub.setParamMap({ id: 99999 });
         createComponent();
     }));
 
@@ -233,12 +234,12 @@ describe('HeroDetailComponent - module imports', () => {
     beforeEach(fakeAsync(() => {
         TestBed.
             configureTestingModule({
-                imports: [ SharedModule ],
-                declarations: [ HeroDetailComponent ],  // no need to declare TitleCasePipe since it is imported in SharedModule
+                imports: [SharedModule],
+                declarations: [HeroDetailComponent],  // no need to declare TitleCasePipe since it is imported in SharedModule
                 providers: [
-                    {provide: ActivatedRoute, useValue: activatedRouteStub},
-                    {provide: Router, useValue: routerSpy},
-                    {provide: HeroService, useClass: TestHeroService}
+                    { provide: ActivatedRoute, useValue: activatedRouteStub },
+                    { provide: Router, useValue: routerSpy },
+                    { provide: HeroService, useClass: TestHeroService }
                 ]
             })
             .compileComponents()
@@ -256,4 +257,70 @@ describe('HeroDetailComponent - module imports', () => {
         fixture.detectChanges();  // this second detectChanges is also NEEDED
         expect(page.nameDisplay.textContent).toContain(expectedHero.name);
     }));
+});
+
+describe('HeroDetailComponent - override providers', () => {
+    // Borrowing the HeroDetailServiceSpy class from Angular's docs
+    // Source: https://angular.io/guide/testing-components-scenarios#provide-a-spy-stub-herodetailservicespy
+    class HeroDetailServiceSpy {
+        testHero: Hero = { id: 42, name: 'Test Hero' };
+
+        // stub the getHero method
+        getHero = jasmine.createSpy('getHero').and.callFake(
+            () => asyncData(Object.assign({}, this.testHero))
+        );
+
+        // stub the saveHero method
+        saveHero = jasmine.createSpy('saveHero').and.callFake(
+            (hero: Hero) => asyncData(Object.assign(this.testHero, hero))
+        );
+    }
+
+    let comp: HeroDetailComponent;
+    let hds: HeroDetailServiceSpy;
+    const activatedRouteStub = new ActivatedRouteStub();
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
+    activatedRouteStub.setParamMap({id: 42});  // NOTE: THIS is the line that caused the test cases to run
+
+    function createComponent() {
+        fixture = TestBed.createComponent(HeroDetailComponent);
+        comp = fixture.componentInstance;
+        page = new Page(fixture);
+
+        fixture.detectChanges();  // ngOnInit
+
+        return fixture.whenStable().then(() => {
+            fixture.detectChanges();  // async calls
+        });
+    }
+
+    beforeEach(fakeAsync(() => {
+        
+        TestBed.configureTestingModule({
+            imports: [HeroModule],
+            providers: [
+                { provide: ActivatedRoute, useValue: activatedRouteStub },
+                { provide: Router, useValue: routerSpy },
+            ]
+        })
+            .overrideComponent(
+                HeroDetailComponent, {
+                    set: {
+                        providers: [{ provide: HeroDetailService, useClass: HeroDetailServiceSpy }]
+                    }
+                }
+            )
+            .compileComponents();
+    }));
+
+
+    beforeEach(fakeAsync(() => {
+        createComponent();
+        hds = fixture.debugElement.injector.get(HeroDetailService) as any;
+    }));
+
+    it('should have called `getHero`', () => {
+        expect(hds.getHero.calls.count()).toBe(1, 'getHero called once');
+    });
 });
