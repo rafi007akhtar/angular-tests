@@ -164,3 +164,9 @@ As I was practising testing on [angular.io](https://angular.io), I took some not
         // now write expect statements containing the test
     }));
     ```
+
+### Override component providers
+- If you want to create a _new_ spy, instead of spying on another method, instead of using `createSpyObject` or `spyOn`, use `jasmine.createSpy` method, like so:
+    ```ts
+    const spy = jasmine.createSpy('spyName');  // this can be chained with other methods like `and` and be provided w/ functionality accordingly
+    ```
