@@ -9,6 +9,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { click } from 'src/testing';
 import { HeroDetailService } from './hero-detail.service';
+import { SharedModule } from '../shared/shared.module';
 
 let fixture: ComponentFixture<HeroDetailComponent>;
 let page: Page;
@@ -65,8 +66,7 @@ function newEvent(eventName: string, bubbles = false, cancelable = false) {
 
 describe('HeroDetailComponent - when navigates to existing hero', () => {
     let component: HeroDetailComponent;
-    // let page: Page;
-    // let fixture: ComponentFixture<HeroDetailComponent>;
+
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const activatedRouteStub = new ActivatedRouteStub()
 
@@ -75,7 +75,7 @@ describe('HeroDetailComponent - when navigates to existing hero', () => {
     beforeEach(fakeAsync(() => {
         TestBed.configureTestingModule({
             imports: [HeroModule],
-            // declarations: [HeroDetailComponent],
+            // declarations: [HeroDetailComponent],  // no double declarations
             providers: [
                 { provide: ActivatedRoute, useValue: activatedRouteStub },
                 { provide: HeroService, useClass: TestHeroService },
@@ -215,11 +215,45 @@ describe('HeroDetailComponent - when navigates to non-existent hero', () => {
 
         return fixture.whenStable().then(() => {
             fixture.detectChanges();  // async calls
-        })
+        });
     }
 
     it('should try to navigate back to hero list', () => {
         expect(page.gotoListSpy.calls.any()).toBeTruthy('comp.gotoList called');
         expect(page.navigateSpy.calls.any()).toBeTruthy('router.navigate called');
     });
+});
+
+describe('HeroDetailComponent - module imports', () => {
+    let comp: HeroDetailComponent;
+    const activatedRouteStub = new ActivatedRouteStub();
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const expectedHero = getTestHeroes()[0];  // first hero
+
+    beforeEach(fakeAsync(() => {
+        TestBed.
+            configureTestingModule({
+                imports: [ SharedModule ],
+                declarations: [ HeroDetailComponent ],  // no need to declare TitleCasePipe since it is imported in SharedModule
+                providers: [
+                    {provide: ActivatedRoute, useValue: activatedRouteStub},
+                    {provide: Router, useValue: routerSpy},
+                    {provide: HeroService, useClass: TestHeroService}
+                ]
+            })
+            .compileComponents()
+            .then(() => {
+                activatedRouteStub.setParamMap({ id: expectedHero.id });
+                fixture = TestBed.createComponent(HeroDetailComponent);
+                comp = fixture.componentInstance;
+                page = new Page(fixture);
+
+                fixture.detectChanges();  // this first detectChanges is NEEDED
+            });
+    }));
+
+    it('should display 1st hero\'s name', fakeAsync(() => {
+        fixture.detectChanges();  // this second detectChanges is also NEEDED
+        expect(page.nameDisplay.textContent).toContain(expectedHero.name);
+    }));
 });
