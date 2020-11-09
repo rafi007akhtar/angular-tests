@@ -7,10 +7,41 @@ Forked from the original [sample app](https://angular.io/generated/live-examples
 As I was practising testing on [angular.io](https://angular.io), I took some notes on each section.
 
 ## Intro
-(yet to be written)
+[[angular.io link](https://angular.io/guide/testing)]
+
+CLI Command to run the test cases:
+```sh
+ng test
+```
 
 ## Code coverage
-(yet to be written)
+[[angular.io link](https://angular.io/guide/testing-code-coverage)]
+
+Enable the following flag in angular.json file to recreate code covg. on every test.
+```json
+"test": {
+  "options": {
+    "codeCoverage": true
+  }
+}
+```
+Add the following element to the `reports` array in karma.js file.
+```ts
+coverageIstanbulReporter: {
+    reports: [ 'html', 'lcovonly', 'text-summary' ], // to view the coverage on CLI while running test cases
+    thresholds: {
+        // to enforce coverage percentages
+        statements: 80,
+        lines: 80,
+        branches: 80,
+        functions: 80
+    }
+}
+```
+Run the following line to generate code-coverage while running test cases.
+```sh
+ng test --code-coverage
+```
 
 ## Testing services
 (yet to be written)
