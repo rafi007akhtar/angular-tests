@@ -17,34 +17,64 @@ ng test
 ## Code coverage
 [[angular.io link](https://angular.io/guide/testing-code-coverage)]
 
-Enable the following flag in angular.json file to recreate code covg. on every test.
-```json
-"test": {
-  "options": {
-    "codeCoverage": true
-  }
-}
-```
-Add the following element to the `reports` array in karma.js file.
-```ts
-coverageIstanbulReporter: {
-    reports: [ 'html', 'lcovonly', 'text-summary' ], // to view the coverage on CLI while running test cases
-    thresholds: {
-        // to enforce coverage percentages
-        statements: 80,
-        lines: 80,
-        branches: 80,
-        functions: 80
+- Enable the following flag in angular.json file to recreate code covg. on every test.
+    ```json
+    "test": {
+    "options": {
+        "codeCoverage": true
+        }
     }
-}
-```
-Run the following line to generate code-coverage while running test cases.
-```sh
-ng test --code-coverage
-```
+    ```
+- Add the following element to the `reports` array in karma.js file.
+    ```ts
+    coverageIstanbulReporter: {
+        reports: [ 'html', 'lcovonly', 'text-summary' ], // to view the coverage on CLI while running test cases
+        thresholds: {
+            // to enforce coverage percentages
+            statements: 80,
+            lines: 80,
+            branches: 80,
+            functions: 80
+        }
+    }
+    ```
+- Run the following line to generate code-coverage while running test cases.
+    ```sh
+    ng test --code-coverage
+    ```
 
 ## Testing services
-(yet to be written)
+[[angular.io link](https://angular.io/guide/testing-services)]
+
+- Don't use actual services when calling them; instead create mocks and use them as stubs while calling them.
+- The easiest way to create mocks is by using _spies_.
+- Spies docs [link](https://jasmine.github.io/2.9/introduction#section-Spies) on Jasmine website.
+- `TestBed` is used to emulate an `@NgModule`.
+- Syntax to configure the testing module.
+    ```ts
+    const stub = {
+        stubMethod: () => { /* fill in the bare minimum needed */ }
+    };
+
+    beforeEach(() => {
+        TestBed.configureTestingModule(
+            declarations: [ /* add all classes to declare */ ],
+            providers: [
+                { provide: className, useValue: stub }
+            ]
+        );
+    });
+    ```
+- In order to setup a spy for the `getValue` method of the `ValueService` class, for example, the syntax is:
+    ```ts
+    const spy = jasmine.createSpyObject('ValueService', ['getValue']);  // method 1
+    spyOn('ValueService', ['getValue']);
+    ```
+- As of Angular 9, `get` method of `TestBed` is depracated, and is replaced with `inject`.
+    ```ts
+    const service: SomeClass;
+    service = TestBed.inject(SomeClass);
+    ```
 
 ## Basic of Testing Component
 (yet to be written)
