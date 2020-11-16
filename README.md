@@ -28,7 +28,11 @@ ng test
 - Add the following element to the `reports` array in karma.js file.
     ```ts
     coverageIstanbulReporter: {
-        reports: [ 'html', 'lcovonly', 'text-summary' ], // to view the coverage on CLI while running test cases
+        reports: [
+            'html',
+            'lcovonly',
+            'text-summary'  // to view the coverage on CLI while running test cases
+        ],
         thresholds: {
             // to enforce coverage percentages
             statements: 80,
