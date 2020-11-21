@@ -80,10 +80,26 @@ ng test
     service = TestBed.inject(SomeClass);
     ```
 
-- Example file: [demo.component.spec.ts](./src/app/demo/demo.spec.ts)
+- Example file: [demo.spec.ts](./src/app/demo/demo.spec.ts)
 
 ## Basic of Testing Component
-(yet to be written)
+
+### Component class testing
+- Testing **event emitters**
+    ```ts
+    // component file (non-spec, excerpt)
+    x = 5;
+    @Output val = new EventEmitter<ClassName>;
+    method() { this.val.emit(this.x); }
+
+    // spec file for the above component file, inside an it, after triggering the said event
+    comp.val.subscribe(x => {
+        expect(x).toBe(5)
+    });
+    ```
+    Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
+
+- Other example file: [welcome.component.spec.ts](./src/app/welcome/welcome.component.spec.ts)
 
 ## Component testing scenarios
 
