@@ -80,6 +80,8 @@ ng test
     service = TestBed.inject(SomeClass);
     ```
 
+- Example file: [demo.component.spec.ts](./src/app/demo/demo.spec.ts)
+
 ## Basic of Testing Component
 (yet to be written)
 
