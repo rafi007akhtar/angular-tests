@@ -17,7 +17,7 @@ ng test
 ## Code coverage
 [[angular.io link](https://angular.io/guide/testing-code-coverage)]
 
-- Enable the following flag in angular.json file to recreate code covg. on every test.
+- Enable the following flag in [angular.json](./angular.json) file to recreate code covg. on every test.
     ```json
     "test": {
     "options": {
@@ -25,7 +25,7 @@ ng test
         }
     }
     ```
-- Add the following element to the `reports` array in karma.js file.
+- Add the following element to the `reports` array in [karma.conf.js](./karma.conf.js) file.
     ```ts
     coverageIstanbulReporter: {
         reports: [
