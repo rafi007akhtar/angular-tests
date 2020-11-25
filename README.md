@@ -101,6 +101,27 @@ ng test
 
 - Other example file: [welcome.component.spec.ts](./src/app/welcome/welcome.component.spec.ts)
 
+### Component DOM testing
+- Using `nativeElement`
+    ```ts
+    const ne: HTMLElement = fixture.nativeElement; // fetch the nativeElement from fixture
+    const el = ne.querySelector('query'); // run a CSS query to fetch the element
+    ```
+- Using `debugElement`
+    ```ts
+    const de: DebugElement = fixture.debugElement;
+    const ne: HTMLElement = de.nativeElement;
+    const el = ne.querySelector('query');
+    ```
+- Using `By` coupled with `debugElement`
+    ```ts
+    const de: DebugElement = fixture.debugElement;
+    const el = de.query(By.css('query')); // CSS query goes in 'query'
+    ```
+- Note: Do not reconfigure `TestBed` after calling `TestBed.createComponent`.
+
+- Example file: [banner-initial.component.spec.ts](./src/app/banner/banner-initial.component.spec.ts)
+
 ## Component testing scenarios
 
 ### Routing component
