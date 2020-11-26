@@ -72,7 +72,7 @@ ng test
 - In order to setup a spy for the `getValue` method of the `ValueService` class, for example, the syntax is:
     ```ts
     const spy = jasmine.createSpyObject('ValueService', ['getValue']);  // method 1
-    spyOn('ValueService', ['getValue']);
+    spyOn('ValueService', ['getValue']);  // method 2
     ```
 - As of Angular 9, `get` method of `TestBed` is depracated, and is replaced with `inject`.
     ```ts
@@ -87,12 +87,14 @@ ng test
 ### Component class testing
 - Testing **event emitters**
     ```ts
-    // component file (non-spec, excerpt)
+    // INSIDE THE COMPONENT FILE
+    // set up the event emiiter
     x = 5;
     @Output val = new EventEmitter<ClassName>;
     method() { this.val.emit(this.x); }
 
-    // spec file for the above component file, inside an it, after triggering the said event
+    // INSIDE THE SPEC FILE
+    // trigger the event, then proceed as follows
     comp.val.subscribe(x => {
         expect(x).toBe(5)
     });
@@ -116,7 +118,8 @@ ng test
 - Using `By` coupled with `debugElement`
     ```ts
     const de: DebugElement = fixture.debugElement;
-    const el = de.query(By.css('query')); // CSS query goes in 'query'
+    const queryResult = de.query(By.css('query')); // CSS query goes in 'query'
+    const el = queryResult.nativeElement;
     ```
 - Note: Do not reconfigure `TestBed` after calling `TestBed.createComponent`.
 
