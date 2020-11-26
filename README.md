@@ -83,6 +83,7 @@ ng test
 - Example file: [demo.spec.ts](./src/app/demo/demo.spec.ts)
 
 ## Basic of Testing Component
+[[angular.io link](https://angular.io/guide/testing-components-basics)]
 
 ### Component class testing
 - Testing **event emitters**
@@ -126,6 +127,7 @@ ng test
 - Example file: [banner-initial.component.spec.ts](./src/app/banner/banner-initial.component.spec.ts)
 
 ## Component testing scenarios
+[[angular.io link](https://angular.io/guide/testing-components-scenarios)]
 
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
