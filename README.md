@@ -97,7 +97,7 @@ ng test
     // INSIDE THE SPEC FILE
     // trigger the event, then proceed as follows
     comp.val.subscribe(x => {
-        expect(x).toBe(5)
+        expect(component.x).toBe(5)
     });
     ```
     Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
@@ -159,6 +159,29 @@ ng test
 
 ### Component with external files
 - If template and CSS files are external, and if you're running the tests on a non-CLI platform, use `compileComponents`. (Discussed [below](#using-compilecomponents).)
+
+### Component with async service
+
+- Use the `tick` method to counteract async delay in the code being tested, inside an async zone.
+    ```ts
+    // in the component file
+    method() {
+        setTimeout({
+            this.x = 5;
+        }, 1000);
+    }
+    
+    // in the spec file
+    it('tests the above method', fakeAsync(() => {
+        component.method();
+        tick(1000);  // put the delay in ms as parameter
+        expect(component.x).toBe(5);
+    }))
+    ```
+- Use `fakeAsync` as the async zone most of the time, and `async` (Angular 9 or below) or `waitForAsync` (Angular 10 or above) only when the test makes an XHR call.
+- Async observables for data and error can be created using the `defer` method. See `asyncData` and `asyncError` in [async-observable-helpers.ts](./src/testing/async-observable-helpers.ts).
+- Angular provides many async testing methods like `whenStable` and `done`. I'm skipping them, and more, here. But they can be found in Angular's testing guide, [here](https://angular.io/guide/testing-components-scenarios#component-with-async-service).
+- Example file: [twain.component.spec.ts](./src/app/twain/twain.component.spec.ts)
 
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
