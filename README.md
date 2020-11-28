@@ -149,6 +149,14 @@ ng test
 - Hence, automatic change will not apply if you make a manual change. (Instead, just use `fixture.detectChanges` all the time.)
 - Example file: [banner.component.detect-changes.spec.ts](./src/app/banner/banner.component.detect-changes.spec.ts)
 
+- You can use `dispatchEvent` to trigger an event, like input.
+    ```ts
+    const inputEl = fixture.nativeElement.querySelector('input');
+    inputEl.value = 'some generic value';
+    inputEl.dispatchEvent(new Event('input'));
+    ```
+- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts);
+
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
 - Takeaway: **You can use a spy object as a stub to a class.**
