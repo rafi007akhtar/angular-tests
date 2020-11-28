@@ -183,6 +183,26 @@ ng test
 - Angular provides many async testing methods like `whenStable` and `done`. I'm skipping them, and more, here. But they can be found in Angular's testing guide, [here](https://angular.io/guide/testing-components-scenarios#component-with-async-service).
 - Example file: [twain.component.spec.ts](./src/app/twain/twain.component.spec.ts)
 
+### Component marble tests
+- A **cold observable** does not produce data until you subscribe to it, like all `HttpClient` methods.
+- A **hot observable** starts producing data before it is subscribed to, like `Router.events`.
+- A **marble** is a virtual unit of time, and is denoted by a symbol, like `-`, `x`, `|`, `#`.
+- The following line in testing using the `cold` marble method to _wait_ for three frames (`---`), _emit_ the mapped value (`x`), and complete (`|`).
+    ```ts
+    let emittedValue;
+    const x$ = cold('---x|', { x: emittedValue });
+    ```
+- The following line in testing activates the marble observable `getTestScheduler` method.
+    ```ts
+    getTestScheduler().flush();
+    ```
+- Both `cold` and `getTestScheduler` can be imported from `jasmine-marbles`.
+    ```ts
+    import { cold, getTestScheduler } from 'jasmine-marbles';
+    ```
+- More about marbles in the [official docs](https://rxjs.dev/guide/testing/marble-testing).
+- Example file: [twain.component.spec.ts](./src/app/twain/twain.component.spec.ts)
+
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
 - Takeaway: **You can use a spy object as a stub to a class.**
