@@ -129,6 +129,26 @@ ng test
 ## Component testing scenarios
 [[angular.io link](https://angular.io/guide/testing-components-scenarios)]
 
+### Component binding
+- You can use `ComponentFixtureAutoDetect` as a limited alternative to `fixture.detectChanges`.
+    ```ts
+    // inside beforeEach
+    TestBed.configureTestingModule({
+        declarations: [ /* add the classes to declare */ ],
+        providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }]
+    });
+
+    // inside an `it`
+    this.heading = 'the heading';  // assume this variable is property-bound to html
+    const h1 = fixture.nativeElement.querySelector('h1');
+    expect(h1.textContent).toBe('the heading');  // passes
+
+    this.heading = 'new heading';
+    expect(h1.textContent).toBe('new heading');  // fails
+    ```
+- Hence, automatic change will not apply if you make a manual change. (Instead, just use `fixture.detectChanges` all the time.)
+- Example file: [banner.component.detect-changes.spec.ts](./src/app/banner/banner.component.detect-changes.spec.ts)
+
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
 - Takeaway: **You can use a spy object as a stub to a class.**
