@@ -155,7 +155,10 @@ ng test
     inputEl.value = 'some generic value';
     inputEl.dispatchEvent(new Event('input'));
     ```
-- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts);
+- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
+
+### Component with external files
+- If template and CSS files are external, and if you're running the tests on a non-CLI platform, use `compileComponents`. (Discussed [below](#using-compilecomponents).)
 
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
