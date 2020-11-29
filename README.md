@@ -203,6 +203,20 @@ ng test
 - More about marbles in the [official docs](https://rxjs.dev/guide/testing/marble-testing).
 - Example file: [twain.component.spec.ts](./src/app/twain/twain.component.spec.ts)
 
+### Component with inputs and outputs
+- To trigger a click event while testing:
+    * use `triggerEventHandler` if dealing with a `DebugElement`
+    * use the native `click` event if dealing with an `HTMLElement`
+    ```ts
+    const de = fixture.debugElement.query(By.css('#button'));
+    de.triggerEventHandler('click', null);
+
+    const el = de.nativeElement;
+    el.click();
+    ```
+- These click events are automated in [this](./src/testing/index.ts) file.
+- Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
+
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
 - Takeaway: **You can use a spy object as a stub to a class.**
