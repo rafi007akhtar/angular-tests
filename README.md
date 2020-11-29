@@ -2,20 +2,18 @@
 
 Forked from the original [sample app](https://angular.io/generated/live-examples/testing/stackblitz.html) from [angular.io](https://angular.io/guide/testing), this app is used for practising testing using Jasmine and Karma.
 
-# Notes
+# :pencil: Notes
 
 As I was practising testing on [angular.io](https://angular.io), I took some notes on each section.
 
-## Intro
-[[angular.io link](https://angular.io/guide/testing)]
+## [Intro :arrow_upper_right:](https://angular.io/guide/testing)
 
 CLI Command to run the test cases:
 ```sh
 ng test
 ```
 
-## Code coverage
-[[angular.io link](https://angular.io/guide/testing-code-coverage)]
+## [Code coverage :arrow_upper_right: ](https://angular.io/guide/testing-code-coverage)
 
 - Enable the following flag in [angular.json](./angular.json) file to recreate code covg. on every test.
     ```json
@@ -47,8 +45,7 @@ ng test
     ng test --code-coverage
     ```
 
-## Testing services
-[[angular.io link](https://angular.io/guide/testing-services)]
+## [Testing services :arrow_upper_right:](https://angular.io/guide/testing-services)
 
 - Don't use actual services when calling them; instead create mocks and use them as stubs while calling them.
 - The easiest way to create mocks is by using _spies_.
@@ -82,10 +79,9 @@ ng test
 
 - Example file: [demo.spec.ts](./src/app/demo/demo.spec.ts)
 
-## Basic of Testing Component
-[[angular.io link](https://angular.io/guide/testing-components-basics)]
+## [Basic of Testing Component :arrow_upper_right:](https://angular.io/guide/testing-components-basics)
 
-### Component class testing
+### Component class testing :arrow_upper_right:
 - Testing **event emitters**
     ```ts
     // INSIDE THE COMPONENT FILE
@@ -104,7 +100,7 @@ ng test
 
 - Other example file: [welcome.component.spec.ts](./src/app/welcome/welcome.component.spec.ts)
 
-### Component DOM testing
+### Component DOM testing :arrow_upper_right:
 - Using `nativeElement`
     ```ts
     const ne: HTMLElement = fixture.nativeElement; // fetch the nativeElement from fixture
@@ -126,10 +122,9 @@ ng test
 
 - Example file: [banner-initial.component.spec.ts](./src/app/banner/banner-initial.component.spec.ts)
 
-## Component testing scenarios
-[[angular.io link](https://angular.io/guide/testing-components-scenarios)]
+## [Component testing scenarios :arrow_upper_right:](https://angular.io/guide/testing-components-scenarios)
 
-### Component binding
+### Component binding :arrow_upper_right:
 - You can use `ComponentFixtureAutoDetect` as a limited alternative to `fixture.detectChanges`.
     ```ts
     // inside beforeEach
@@ -157,10 +152,10 @@ ng test
     ```
 - Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
-### Component with external files
+### Component with external files :arrow_upper_right:
 - If template and CSS files are external, and if you're running the tests on a non-CLI platform, use `compileComponents`. (Discussed [below](#using-compilecomponents).)
 
-### Component with async service
+### Component with async service :arrow_upper_right:
 
 - Use the `tick` method to counteract async delay in the code being tested, inside an async zone.
     ```ts
@@ -183,7 +178,7 @@ ng test
 - Angular provides many async testing methods like `whenStable` and `done`. I'm skipping them, and more, here. But they can be found in Angular's testing guide, [here](https://angular.io/guide/testing-components-scenarios#component-with-async-service).
 - Example file: [twain.component.spec.ts](./src/app/twain/twain.component.spec.ts)
 
-### Component marble tests
+### Component marble tests :arrow_upper_right:
 - A **cold observable** does not produce data until you subscribe to it, like all `HttpClient` methods.
 - A **hot observable** starts producing data before it is subscribed to, like `Router.events`.
 - A **marble** is a virtual unit of time, and is denoted by a symbol, like `-`, `x`, `|`, `#`.
@@ -203,7 +198,7 @@ ng test
 - More about marbles in the [official docs](https://rxjs.dev/guide/testing/marble-testing).
 - Example file: [twain.component.spec.ts](./src/app/twain/twain.component.spec.ts)
 
-### Component with inputs and outputs
+### Component with inputs and outputs :arrow_upper_right:
 - To trigger a click event while testing:
     * use `triggerEventHandler` if dealing with a `DebugElement`
     * use the native `click` event if dealing with an `HTMLElement`
@@ -217,7 +212,7 @@ ng test
 - These click events are automated in [this](./src/testing/index.ts) file.
 - Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
 
-### Component inside a test host
+### Component inside a test host :arrow_upper_right:
 - A test host is a stripped-down version of a class that only contains properties required for the testing.
 - Remember to add the test host to the `declarations` array while configuring the `TestBed`, and to pass the test host as the parameter while creating the component.
     ```ts
@@ -228,7 +223,7 @@ ng test
     ```
 - Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
 
-### Routing component
+### Routing component :arrow_upper_right:
 - This component tells angular to navigate from the current component to another component.
 - Takeaway: **You can use a spy object as a stub to a class.**
 
@@ -248,7 +243,7 @@ ng test
     ```
 - Example file: [dashboard.component.spec.ts](./src/app/dashboard/dashboard.component.spec.ts)
 
-### Routed Component
+### Routed Component :arrow_upper_right:
 - It is the destination of a routing component.
 - For test cases involving async code, the use of `fakeAsync` or `waitForAsync` is indespensible. In such cases, **group all related async codes inside a `describe` block each**, like so:
     ```ts
@@ -284,7 +279,7 @@ ng test
 - Activated route stub source: [link on angular.io](https://angular.io/guide/testing-components-scenarios#routed-components).
 - Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
-### Nested Component Tests
+### Nested Component Tests :arrow_upper_right:
 - Shallow component testing: here, the code reduces the stubbing to only those components required in the component's test cases.
 - **`NO_ERRORS_SCHEMA`** instructs the compiler to ignore the stubs not found during compilation.
     ```ts
@@ -296,7 +291,7 @@ ng test
 - Do *not* overuse `NO_ERRORS_SCHEMA`, since the compiler will then be unable to tell you where the error is in case any interaction has happened with the ignored stubs.
 - Example file: [app.component.spec.ts](./src/app/app.component.spec.ts)
 
-### Components with `RouterLink`
+### Components with `RouterLink` :arrow_upper_right:
 - I've used `RouterLinkDirectiveStub` as a ready-made stub of the `RouterLink` class.
 - Source: [link on angular.io](https://angular.io/guide/testing-components-scenarios#components-with-routerlink)
 - `By.directive(type)` can be used to fetch all injected elements of the specified type. Example:
@@ -305,7 +300,7 @@ ng test
     ```
 - Example file: [app.component.spec.ts](./src/app/app.component.spec.ts)
 
-### Use a `page` object
+### Use a `page` object :arrow_upper_right:
 - The `page` object acted as stubbed version of hero-detail component. It is basically a helper class designed to provide attributes, methods, and spies for testing this otherwise challenging-to-stub class.
 - Source: [link on angular.io](https://angular.io/guide/testing-components-scenarios#use-a-page-object)
 - **Testing when the method contains a subscribe**. Steps:
@@ -328,7 +323,7 @@ ng test
     ```
 - Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
-### Using `compileComponents()`
+### Using `compileComponents()` :arrow_upper_right:
 - If the testing _only_ happens in in Angular CLI, the `compileComponents` method can be skipped as all the external files are in memory.
 - If the testing happens in a non-CLI external env, and if the file tested has external files (like external template and css files), the compilation will fail.
 - REASON: the compiler must read external files, which is an async tasks.
@@ -361,7 +356,7 @@ ng test
     ```
 - Example files: [banner.component.spec.ts](./src/app/banner/banner.component.spec.ts), [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
-### Module Imports
+### [Module Imports :arrow_upper_right:]
 - When using a consolidated `compileComponents` implementation, if you need to put `detectChanges` method, put it _twice_: first, inside `beforeEach`, and then inside the `it`, like so:
     ```ts
     beforeEach(fakeAsync(() => {
@@ -381,7 +376,7 @@ ng test
     ```
 - Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
-### Override component providers
+### [Override component providers :arrow_upper_right:]
 - If you want to create a _new_ spy, instead of spying on another method, instead of using `createSpyObject` or `spyOn`, use `jasmine.createSpy` method, like so:
     ```ts
     const spy = jasmine.createSpy('spyName');  // this can be chained with other methods like `and` and be provided w/ functionality accordingly
