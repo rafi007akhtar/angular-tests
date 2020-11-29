@@ -6,7 +6,7 @@ Forked from the original [sample app](https://angular.io/generated/live-examples
 
 As I was practising testing on [angular.io](https://angular.io), I took some notes on each section.
 
-> **Disclaimer.** I took these notes as I practised along the Angular docs, but these are not meant to summarise the said docs, nor they are supposed to act as a replacement. I have tried to accredit Angular as much as I possibly could wherever I felt it was needed, both in these notes as well as the spec files; the headings and subheadings are linked to their respective pages in the official docs for this very reason. Furthermore, I do not claim these notes are accurate to the fullest extent, although I have tried to be as accurate as I could. If you find any mistakes, feel free to [open an issue](https://github.com/rafi007akhtar/angular-tests/issues) or [raise a PR](https://github.com/rafi007akhtar/angular-tests/pulls).
+> **Disclaimer.** I took these notes as I practised along the Angular docs, but they are not meant to summarise the said docs, nor are they supposed to act as a replacement. I have tried to accredit Angular as much as I possibly could wherever I felt it was needed, both in these notes as well as the spec files; the headings and subheadings are linked to their respective pages in the official docs for this very reason. Furthermore, I do not claim these notes are accurate to the fullest extent, although I have tried to be as accurate as I could. If you find any mistakes, feel free to [open an issue](https://github.com/rafi007akhtar/angular-tests/issues) or [raise a PR](https://github.com/rafi007akhtar/angular-tests/pulls).
 
 ## [Intro :arrow_upper_right:](https://angular.io/guide/testing)
 
