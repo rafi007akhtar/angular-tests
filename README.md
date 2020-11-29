@@ -217,6 +217,17 @@ ng test
 - These click events are automated in [this](./src/testing/index.ts) file.
 - Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
 
+### Component inside a test host
+- A test host is a stripped-down version of a class that only contains properties required for the testing.
+- Remember to add the test host to the `declarations` array while configuring the `TestBed`, and to pass the test host as the parameter while creating the component.
+    ```ts
+    TestBed.configureTestingModule({
+        declarations: [ ActualComponent, TestHostComponent ]
+    })
+    fixture = TestBed.createComponent(TestHostComponent);
+    ```
+- Example file: [dashboard-hero.component.spec.ts](./src/app/dashboard/dashboard-hero.component.spec.ts)
+
 ### Routing component
 - This component tells angular to navigate from the current component to another component.
 - Takeaway: **You can use a spy object as a stub to a class.**
