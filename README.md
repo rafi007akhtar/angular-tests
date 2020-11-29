@@ -153,7 +153,16 @@ ng test
 - Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
 ### [Component with external files :arrow_upper_right:](https://angular.io/guide/testing-components-scenarios#component-with-external-files)
-- If template and CSS files are external, and if you're running the tests on a non-CLI platform, use `compileComponents`. (Discussed [below](#using-compilecomponents).)
+- If template and CSS files are external, and if you're running the tests on a non-CLI platform, use `compileComponents`. (Discussed [below](#using-compilecomponents-arrow_upper_right).)
+
+### [Component with dependency]()
+- `TestBed.inject` does not work when you're trying to [override component providers](#override-component-providers-arrow_upper_right).
+- Use the fixture to get the service instead in those cases.
+    ```ts
+    service = TestBed.inject(ClassName);  // does not work when component is overriden
+
+    service = fixture.debugElement.injector.get(ClassName);  // works everytime
+    ```
 
 ### [Component with async service :arrow_upper_right:](https://angular.io/guide/testing-components-scenarios#component-with-async-service)
 
