@@ -246,6 +246,7 @@ ng test
     })
     
     ```
+- Example file: [dashboard.component.spec.ts](./src/app/dashboard/dashboard.component.spec.ts)
 
 ### Routed Component
 - It is the destination of a routing component.
@@ -280,6 +281,8 @@ ng test
         createComponent();
     }));
     ```
+- Activated route stub source: [link on angular.io](https://angular.io/guide/testing-components-scenarios#routed-components).
+- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
 ### Nested Component Tests
 - Shallow component testing: here, the code reduces the stubbing to only those components required in the component's test cases.
@@ -291,6 +294,7 @@ ng test
     })
     ```
 - Do *not* overuse `NO_ERRORS_SCHEMA`, since the compiler will then be unable to tell you where the error is in case any interaction has happened with the ignored stubs.
+- Example file: [app.component.spec.ts](./src/app/app.component.spec.ts)
 
 ### Components with `RouterLink`
 - I've used `RouterLinkDirectiveStub` as a ready-made stub of the `RouterLink` class.
@@ -299,6 +303,7 @@ ng test
     ```ts
     const routerLinks = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));  // replaced `type` with `RouterLinkDirectiveStub`
     ```
+- Example file: [app.component.spec.ts](./src/app/app.component.spec.ts)
 
 ### Use a `page` object
 - The `page` object acted as stubbed version of hero-detail component. It is basically a helper class designed to provide attributes, methods, and spies for testing this otherwise challenging-to-stub class.
@@ -321,6 +326,7 @@ ng test
     const serviceSpy = spyOn(injectedService, 'method');
     // note: this method does not work with `jasmine.createSpyObject`, so use `spyOn` instead
     ```
+- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
 ### Using `compileComponents()`
 - If the testing _only_ happens in in Angular CLI, the `compileComponents` method can be skipped as all the external files are in memory.
@@ -353,6 +359,7 @@ ng test
             })
     }));
     ```
+- Example files: [banner.component.spec.ts](./src/app/banner/banner.component.spec.ts), [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
 ### Module Imports
 - When using a consolidated `compileComponents` implementation, if you need to put `detectChanges` method, put it _twice_: first, inside `beforeEach`, and then inside the `it`, like so:
@@ -372,9 +379,11 @@ ng test
         // now write expect statements containing the test
     }));
     ```
+- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
 
 ### Override component providers
 - If you want to create a _new_ spy, instead of spying on another method, instead of using `createSpyObject` or `spyOn`, use `jasmine.createSpy` method, like so:
     ```ts
     const spy = jasmine.createSpy('spyName');  // this can be chained with other methods like `and` and be provided w/ functionality accordingly
     ```
+- Example file: [hero-detail.component.spec.ts](./src/app/hero/hero-detail.component.spec.ts)
