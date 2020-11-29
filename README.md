@@ -187,7 +187,7 @@ ng test
 - A **cold observable** does not produce data until you subscribe to it, like all `HttpClient` methods.
 - A **hot observable** starts producing data before it is subscribed to, like `Router.events`.
 - A **marble** is a virtual unit of time, and is denoted by a symbol, like `-`, `x`, `|`, `#`.
-- The following line in testing using the `cold` marble method to _wait_ for three frames (`---`), _emit_ the mapped value (`x`), and complete (`|`).
+- The following line in testing using the `cold` marble method to _wait_ for three frames (`---`), _emit_ the mapped value (`x`), and _complete_ (`|`).
     ```ts
     let emittedValue;
     const x$ = cold('---x|', { x: emittedValue });
@@ -208,10 +208,10 @@ ng test
     * use `triggerEventHandler` if dealing with a `DebugElement`
     * use the native `click` event if dealing with an `HTMLElement`
     ```ts
-    const de = fixture.debugElement.query(By.css('#button'));
+    const de: DebugElement = fixture.debugElement.query(By.css('#button'));
     de.triggerEventHandler('click', null);
 
-    const el = de.nativeElement;
+    const el: HTMLElement = de.nativeElement;
     el.click();
     ```
 - These click events are automated in [this](./src/testing/index.ts) file.
