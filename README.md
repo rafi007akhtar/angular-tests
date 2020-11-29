@@ -155,7 +155,7 @@ ng test
 ### [Component with external files :arrow_upper_right:](https://angular.io/guide/testing-components-scenarios#component-with-external-files)
 - If template and CSS files are external, and if you're running the tests on a non-CLI platform, use `compileComponents`. (Discussed [below](#using-compilecomponents-arrow_upper_right).)
 
-### [Component with dependency]()
+### [Component with a dependency :arrow_upper_right:](https://angular.io/guide/testing-components-scenarios#component-with-a-dependency)
 - `TestBed.inject` does not work when you're trying to [override component providers](#override-component-providers-arrow_upper_right).
 - Use the fixture to get the service instead in those cases.
     ```ts
@@ -163,6 +163,7 @@ ng test
 
     service = fixture.debugElement.injector.get(ClassName);  // works everytime
     ```
+- Example file: [welcome.component.spec.ts](./src/app/welcome/welcome.component.spec.ts)
 
 ### [Component with async service :arrow_upper_right:](https://angular.io/guide/testing-components-scenarios#component-with-async-service)
 
